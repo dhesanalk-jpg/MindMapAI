@@ -78,7 +78,7 @@ function App() {
     try {
       const result = await analyzeFile(file)
       setTopics(result.topics.map((t,i)=>({...t,id:`${Date.now()}-${i}`,confidence:0,status:'not_started' as const})))
-      setSourceText(result.source_text||result.preview||'')
+      setSourceText(result.source_text || '')
       setSessions([]); setDone([])
       setPage('Knowledge map')
       setNotice(`${result.topics.length} topics extracted from ${result.filename}. Review them before planning.`)
@@ -118,7 +118,10 @@ function App() {
   }
   const navTo = (name:Page) => {setPage(name);setMobileOpen(false)}
   const openAdd = () => {setDraft({title:'',subject:topics[0]?.subject||'My subject',unit:'Unit 1',difficulty:'Medium',estimated_hours:1});setEditor(null)}
-  const saveTopic = () => {const title=draft.title.trim();if(!title){setNotice('Enter a topic name before saving.');return}if(editor && editor!==false){updateTopic(editor.id,{...draft,title});setNotice('Topic updated.')}else{const t:Topic={...draft,title,id:crypto.randomUUID(),status:'not_started',confidence:0};setTopics(p=>[...p,t]);setNotice('Topic added to your syllabus.')}setEditor(false)}
+  const saveTopic = () => {const title=draft.title.trim();if(!title){setNotice('Enter a topic name before saving.');return}if (editor && typeof editor === 'object') {
+  updateTopic(editor.id, { ...draft, title })
+  setNotice('Topic updated.')
+}else{const t:Topic={...draft,title,id:crypto.randomUUID(),status:'not_started',confidence:0};setTopics(p=>[...p,t]);setNotice('Topic added to your syllabus.')}setEditor(false)}
   const resetDemo = () => {setTopics([]);setSessions([]);setDone([]);setQuestions([]);localStorage.removeItem('mindmap-topics');localStorage.removeItem('mindmap-sessions');localStorage.removeItem('mindmap-done');localStorage.removeItem('mindmap-source-text');setSourceText('');setNotice('Your demo workspace has been cleared. Upload a syllabus or add topics to begin.')}
   const addFromText = (text:string) => {const lines=text.split(/\n|[,;]/).map(x=>x.trim()).filter(x=>x.length>2);const newTopics=lines.map((title,i):Topic=>({id:crypto.randomUUID(),title,subject:topics[0]?.subject||'My subject',unit:`Unit ${Math.floor(i/4)+1}`,difficulty:'Medium',estimated_hours:1,status:'not_started',confidence:0}));setTopics(p=>[...p,...newTopics]);setNotice(`${newTopics.length} topics added.`)}
   return <div className="app-shell">
