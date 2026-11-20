@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # MindMap AI — Smart Study Planner
 
 MindMap AI turns a student's syllabus into a structured, adaptive study workflow.
@@ -154,3 +155,6 @@ Set `GEMINI_API_KEY` only in the backend environment. Never put the key in a `VI
 - Topic extraction uses text heuristics; review and edit the extracted topics before planning.
 - Browser localStorage is device/browser-specific, not a multi-user cloud database.
 - The study plan and fallback practice questions are deterministic demo functionality, not proof of a trained AI model.
+=======
+# MindMapAI
+>>>>>>> 0432d4ab3786514cac2242ecef80078c6ba6ba79
